@@ -2,11 +2,11 @@ import type { JSX } from "react";
 
 type DieProps = {
   isHeld: boolean;
-  hold: boolean;
+  hold: () => void;
   value: number;
 };
 
-export default function Die({ isHeld, hold, value }): JSX.Element {
+export default function Die({ isHeld, hold, value }: DieProps): JSX.Element {
   const styles = {
     backgroundColor: isHeld ? "#59E391" : "white",
   };

@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import Die from "./Die";
+import Die from "./die.tsx";
 import { nanoid } from "nanoid";
 import Confetti from "react-confetti";
 
 export default function App() {
   const [dice, setDice] = useState(() => generateAllNewDice());
-  const buttonRef = useRef(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const gameWon: boolean =
     dice.every((die) => die.isHeld) &&
@@ -13,11 +13,15 @@ export default function App() {
 
   useEffect(() => {
     if (gameWon) {
-      buttonRef.current.focus();
+      buttonRef.current?.focus();
     }
   }, [gameWon]);
 
-  function generateAllNewDice() {
+  function generateAllNewDice(): Array<{
+    value: number;
+    isHeld: boolean;
+    id: string;
+  }> {
     return new Array(10).fill(0).map(() => ({
       value: Math.ceil(Math.random() * 6),
       isHeld: false,
@@ -37,7 +41,7 @@ export default function App() {
     }
   }
 
-  function hold(id) {
+  function hold(id: string): void {
     setDice((oldDice) =>
       oldDice.map((die) =>
         die.id === id ? { ...die, isHeld: !die.isHeld } : die
